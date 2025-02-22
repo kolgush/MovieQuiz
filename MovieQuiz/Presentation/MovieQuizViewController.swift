@@ -69,6 +69,8 @@ final class MovieQuizViewController: UIViewController {
     
     private var correctAnswer = 0
     
+    private var isShowingResult = false
+    
     @IBOutlet private var imageView: UIImageView!
 
     @IBOutlet private var textLabel: UILabel!
@@ -90,19 +92,24 @@ final class MovieQuizViewController: UIViewController {
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        if questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: true)
+        if (!isShowingResult) {
+            
+            if questions[currentQuestionIndex].correctAnswer {
+                showAnswerResult(isCorrect: true)
             }
-        else {
-            showAnswerResult(isCorrect: false)
+            else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
     @IBAction private func noButtonClicked(_ sender: Any) {
-        if !questions[currentQuestionIndex].correctAnswer {
-            showAnswerResult(isCorrect: true)
-        }
-        else {
-            showAnswerResult(isCorrect: false)
+        if (!isShowingResult) {
+            if !questions[currentQuestionIndex].correctAnswer {
+                showAnswerResult(isCorrect: true)
+            }
+            else {
+                showAnswerResult(isCorrect: false)
+            }
         }
     }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -121,6 +128,7 @@ final class MovieQuizViewController: UIViewController {
         
     }
     private func showAnswerResult(isCorrect: Bool) {
+        isShowingResult = true
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor :
@@ -135,6 +143,7 @@ final class MovieQuizViewController: UIViewController {
         
     private func showNextQuestionOrResults() {
         imageView.layer.borderWidth = 0
+        isShowingResult = false
       if currentQuestionIndex == questions.count - 1 {
           let alert = UIAlertController(
             title: "Этот раунд окончен!",
@@ -147,7 +156,7 @@ final class MovieQuizViewController: UIViewController {
           
           alert.addAction(action)
           self.present(alert, animated: true, completion: nil)
-      } else {
+      } else {        
         currentQuestionIndex += 1
         let nextQuistion = questions[currentQuestionIndex]
         let viewModel = convert(model: nextQuistion)
