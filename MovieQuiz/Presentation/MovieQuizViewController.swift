@@ -81,11 +81,6 @@ final class MovieQuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        gameStarting()
-    }
-    private func gameStarting() {
-        correctAnswer = 0
-        currentQuestionIndex = 0
         let currentQuestion = questions[currentQuestionIndex]
         let viewModel = convert(model: currentQuestion)
         show (quiz: viewModel)
@@ -136,7 +131,8 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswer += 1
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return } 
             self.showNextQuestionOrResults()
         }
     }
@@ -151,7 +147,13 @@ final class MovieQuizViewController: UIViewController {
             preferredStyle: .alert)
           
           let action = UIAlertAction(title: "Сыграть еще раз", style: .default) {
-              _ in self.gameStarting ()
+[weak self] _ in
+              guard let self = self else { return }
+              self.correctAnswer = 0
+              self.currentQuestionIndex = 0
+              let currentQuestion = self.questions[self.currentQuestionIndex]
+              let viewModel = self.convert(model: currentQuestion)
+              self.show (quiz: viewModel)
           }
           
           alert.addAction(action)
