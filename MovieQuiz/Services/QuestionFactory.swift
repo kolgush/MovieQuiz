@@ -7,7 +7,7 @@
 
 import Foundation
 
-class QuestionFactory{
+class QuestionFactory : QuestionFactoryProtocol{
     
     private let questions: [QuizQuestion] = [
         QuizQuestion (
@@ -61,13 +61,20 @@ class QuestionFactory{
             correctAnswer: false)
     ]
     
-    func requestNextQuestion() -> QuizQuestion? { // 1
-        // 2
+    weak var delegate: QuestionFactoryDelegate?
+    
+    init(delegate: QuestionFactoryDelegate?) {
+            self.delegate = delegate
+        }
+    
+    func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
-            return nil
+            delegate?.didReceiveNextQuestion(question: nil)
+            return
         }
 
-        return questions[safe: index] // 3
+        let question = questions[safe: index]
+        delegate?.didReceiveNextQuestion(question: question)
     }
 
 }

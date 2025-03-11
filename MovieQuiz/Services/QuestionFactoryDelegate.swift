@@ -1,0 +1,12 @@
+//
+//  QuestionFactoryDelegate.swift
+//  MovieQuiz
+//
+//  Created by Анастасия  Колгушкина  on 11.03.2025.
+//
+
+import Foundation
+
+protocol QuestionFactoryDelegate: AnyObject {               // 1
+    func didReceiveNextQuestion(question: QuizQuestion?)    // 2        
+}
