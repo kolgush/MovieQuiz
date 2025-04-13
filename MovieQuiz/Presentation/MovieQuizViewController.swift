@@ -15,12 +15,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
 
     private var currentQuestion: QuizQuestion? 
-    
+    private var statisticService: StatisticServiceProtocol = StatisticService()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(Bundle.main.bundlePath)
+
         questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()        
+        questionFactory?.requestNextQuestion()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -100,9 +101,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 0
         isShowingResult = false
         if currentQuestionIndex == questionsAmount - 1 {
+                 statisticService.store(correct: correctAnswer, total: questionsAmount)
+                 statisticService.gamesCount += 1
+                 
+                 let text = "Ваш результат: \(correctAnswer)/\(questionsAmount) \n Количество сыграных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date)) \n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             let alert = UIAlertController(
                 title: "Этот раунд окончен!",
-                message: "Ваш результат - \(correctAnswer) из \(questionsAmount)",
+                message: text,
                 preferredStyle: .alert)
             
             let action = UIAlertAction(title: "Сыграть еще раз", style: .default) {
