@@ -11,18 +11,18 @@ import Foundation
 final class StatisticService: StatisticServiceProtocol {
     
     private enum Keys:String {
-         case gamesCount
-         case bestGameCorrect
-         case bestGameTotal
-         case bestGameDate
-         case totalCorrectAnswers
-     }
+        case gamesCount
+        case bestGameCorrect
+        case bestGameTotal
+        case bestGameDate
+        case totalCorrectAnswers
+    }
     
     private let storage: UserDefaults = .standard
     
     var gamesCount: Int {
         get {
-           return storage.integer(forKey: Keys.gamesCount.rawValue)
+            return storage.integer(forKey: Keys.gamesCount.rawValue)
         }
         set {
             storage.set(newValue, forKey: Keys.gamesCount.rawValue)
@@ -47,19 +47,20 @@ final class StatisticService: StatisticServiceProtocol {
     var totalAccuracy: Double {
         let totalGames = storage.integer(forKey: Keys.gamesCount.rawValue)
         let correctAnswers = storage.integer(forKey: Keys.totalCorrectAnswers.rawValue)
-        if totalGames == 0 { return 0.0}
+        if totalGames == 0 { return 0.0 }
         
         return Double(correctAnswers * 100)/Double(totalGames * 10)
     }
     
-  
+    
     func store(correct count: Int, total amount: Int) {
         if count > self.bestGame.correct {
-             let newBestGame = GameResult(correct: count, total: amount, date: Date())
-             bestGame = newBestGame
-         }
+            let newBestGame = GameResult(correct: count, total: amount, date: Date())
+            bestGame = newBestGame
+        }
         let totalCorrectAnswers = storage.integer(forKey: Keys.totalCorrectAnswers.rawValue)
         storage.set(totalCorrectAnswers + count, forKey: Keys.totalCorrectAnswers.rawValue)
         let totalGames = gamesCount
-        storage.set(totalGames, forKey: Keys.gamesCount.rawValue)    }
+        storage.set(totalGames, forKey: Keys.gamesCount.rawValue)
+    }
 }

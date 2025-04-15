@@ -18,7 +18,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var statisticService: StatisticServiceProtocol = StatisticService()
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(Bundle.main.bundlePath)
 
         questionFactory = QuestionFactory(delegate: self)
         questionFactory?.requestNextQuestion()
@@ -27,9 +26,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
 
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
+        guard let question else { return }
         currentQuestion = question
         let viewModel = convert(model: question)
         
@@ -39,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        if (!isShowingResult) {
+        if !isShowingResult {
             guard let currentQuestion = currentQuestion else {
                 return
             }
@@ -53,9 +50,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     @IBAction private func noButtonClicked(_ sender: Any) {
-        if (!isShowingResult) {
+        if !isShowingResult {
 
-            // стало
             guard let currentQuestion = currentQuestion else {
                 return
             }
@@ -92,7 +88,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             correctAnswer += 1
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return } 
+            guard let self else { return }
             self.showNextQuestionOrResults()
         }
     }
@@ -104,7 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                  statisticService.store(correct: correctAnswer, total: questionsAmount)
                  statisticService.gamesCount += 1
                  
-                 let text = "Ваш результат: \(correctAnswer)/\(questionsAmount) \n Количество сыграных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date)) \n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
+            let text = "Ваш результат: \(correctAnswer)/\(questionsAmount) \n Количество сыграных квизов: \(statisticService.gamesCount) \n Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString)) \n Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             let alert = UIAlertController(
                 title: "Этот раунд окончен!",
                 message: text,
