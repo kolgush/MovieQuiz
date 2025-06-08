@@ -170,11 +170,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer() {
-
+        activityIndicator.isHidden = true // скрываем индикатор загрузки
+            questionFactory?.requestNextQuestion()
+        
     }
 
     func didFailToLoadData(with error: Error) {
-
+        showNetworkError(message: error.localizedDescription) // возьмём в качестве сообщения описание ошибки
+        
     }
 }
 
