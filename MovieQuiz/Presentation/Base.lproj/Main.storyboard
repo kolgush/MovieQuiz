@@ -102,17 +102,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="HVd-9b-ohp">
+                                <rect key="frame" x="197" y="458" width="20" height="147"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="HVd-9b-ohp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7hP-jp-F3J"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Kl2-hk-Vu9" secondAttribute="bottom" id="BQC-Ye-S88"/>
                             <constraint firstItem="Kl2-hk-Vu9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="CiD-Ls-3ch"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Kl2-hk-Vu9" secondAttribute="trailing" constant="20" id="EqX-76-l67"/>
                             <constraint firstItem="Kl2-hk-Vu9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="SnN-sc-eSh"/>
+                            <constraint firstItem="HVd-9b-ohp" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="mGi-sW-68M"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="HVd-9b-ohp" id="dod-q7-UjX"/>
                         <outlet property="counterLabel" destination="y70-zu-5Fn" id="lwQ-Id-lDN"/>
                         <outlet property="imageView" destination="c7X-a4-1xr" id="1ws-Zp-PiL"/>
                         <outlet property="textLabel" destination="GbD-3F-yxb" id="rDp-PS-hHM"/>
